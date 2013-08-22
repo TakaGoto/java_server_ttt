@@ -1,9 +1,12 @@
-/**
- * Created with IntelliJ IDEA.
- * User: takayuki
- * Date: 8/21/13
- * Time: 1:38 PM
- * To change this template use File | Settings | File Templates.
- */
+import Responders.GameStart;
+import Responders.TTTOption;
+import com.server.Server;
+
 public class Main {
+    public static void main(String[] args) {
+        Server server = new Server(5000);
+        server.mount("/", new TTTOption());
+        server.mount("/game", new GameStart());
+        server.listen();
+    }
 }

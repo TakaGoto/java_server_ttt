@@ -8,5 +8,24 @@
     <artifactId>java_server_ttt</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>TicTacToe</groupId>
+            <artifactId>TicTacToeJar</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>TakaServer</groupId>
+            <artifactId>TakaServerJar</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,11 +1,26 @@
 package Presenters;
 
-/**
- * Created with IntelliJ IDEA.
- * User: takayuki
- * Date: 8/21/13
- * Time: 4:17 PM
- * To change this template use File | Settings | File Templates.
- */
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 public class BoardPresenterTest {
+    String htmlBoard;
+
+    @Before
+    public void init() {
+        htmlBoard = BoardPresenter.generateBoard("_________");
+    }
+
+    @Test public void generateBoardInHtmlHasForm() {
+        Assert.assertTrue(htmlBoard.contains("form"));
+    }
+
+    @Test public void generateBoardHtmlHasButtons() {
+        Assert.assertTrue(htmlBoard.contains("submit"));
+    }
+
+    @Test public void generateBoardHtmlHasPlayerMoveName() {
+        Assert.assertTrue(htmlBoard.contains("player_move"));
+    }
 }

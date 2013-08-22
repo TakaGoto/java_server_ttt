@@ -1,11 +1,13 @@
 package Presenters;
 
-/**
- * Created with IntelliJ IDEA.
- * User: takayuki
- * Date: 8/21/13
- * Time: 1:44 PM
- * To change this template use File | Settings | File Templates.
- */
+import junit.framework.Assert;
+import org.junit.Test;
+
 public class TTTOptionPresenterTest {
+    @Test public void createHtmlForTTTOptions() {
+        String html = TTTOptionPresenter.generateOptions();
+        Assert.assertTrue(html.contains("form"));
+        Assert.assertTrue(html.contains("player one"));
+        Assert.assertTrue(html.contains("player two"));
+    }
 }
