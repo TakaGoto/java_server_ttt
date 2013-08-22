@@ -16,7 +16,7 @@ public class BoardPresenter {
 
             htmlBoard += "<form action='/player_move' method='post' style='float:left;'>";
             htmlBoard += "<div style='width: 50px; length: 50px;'>";
-            htmlBoard += String.format("<input type='submit' value= %s name='player_move'>", value);
+            htmlBoard += String.format("<input type='submit' value= %s name='playerMove'>", value);
             htmlBoard += "</div></form>";
         }
 
