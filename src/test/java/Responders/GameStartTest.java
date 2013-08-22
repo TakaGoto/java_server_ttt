@@ -5,31 +5,33 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class GameStartTest {
-    Hashtable req;
-    Hashtable resp;
+    Hashtable req, resp, headers, body;
+    List<String> cookies = new ArrayList<String>();
     GameStart gameStart;
-    String cookies;
 
     @Before public void init() {
         gameStart = new GameStart();
         req = new Hashtable();
-        cookies = "board=_________; playerOne=human; playerTwo=computer; boardSize=3";
+        body = new Hashtable();
+        headers = new Hashtable();
     }
 
     @Test public void storesOptionsIntoACookie() {
-        Hashtable body = new Hashtable();
         body.put("playerOne", "human");
         body.put("playerTwo", "computer");
         body.put("boardSize",  "3");
         req.put("Body", body);
         req.put("Method", "POST");
         resp = gameStart.respond(req);
-        assertEquals(cookies, resp.get("Set-Cookie"));
+        cookies = (List<String>) resp.get("Set-Cookie");
+        assertEquals(4, cookies.size());
     }
 
     @Test public void redirectsToTTTOptionWithGetMethodIfNoCookies() {
@@ -45,6 +47,10 @@ public class GameStartTest {
     @Test public void createsAGameAfterSettings() throws IOException {
         req.put("Method", "GET");
         req.put("HTTP-Version", "HTTP/1.0");
+        cookies.add("playerOne=human; path=/");
+        cookies.add("playerTwo=computer; path=/");
+        cookies.add("board=_________; path=/");
+        cookies.add("boardSize=3; path=/");
         gameStart.cookies = cookies;
         resp = gameStart.respond(req);
         String body = new String((byte[]) resp.get("message-body"), "UTF-8");

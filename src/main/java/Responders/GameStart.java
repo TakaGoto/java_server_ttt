@@ -8,11 +8,13 @@ import com.tictactoe.Board.Board;
 import com.tictactoe.Game;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class GameStart implements Responder {
     JavaTTTUi javaTTTUi = new JavaTTTUi();
-    protected String cookies = "";
+    protected List cookies = new ArrayList<String>();
     private Hashtable resp = new Hashtable();
     private Hashtable req = new Hashtable();
     private Hashtable header = new Hashtable();
@@ -33,17 +35,17 @@ public class GameStart implements Responder {
         return resp;
     }
 
-    private void storeCookie(String name, String value) {
-        cookies += name + "=" + value + "; ";
+    private void storeCookie(String name, String value, String path) {
+        cookies.add(name + "=" + value + "; " + "path=" + path);
     }
 
     private void doPost() {
         Hashtable params = (Hashtable) req.get("Body");
         Board board = new Board(Integer.parseInt((String) params.get("boardSize")));
-        storeCookie("board", board.getSlots());
-        storeCookie("playerOne", (String) params.get("playerOne"));
-        storeCookie("playerTwo", (String) params.get("playerTwo"));
-        cookies += "boardSize=" + params.get("boardSize");
+        storeCookie("board", board.getSlots(), "/game");
+        storeCookie("playerOne", (String) params.get("playerOne"), "/game");
+        storeCookie("playerTwo", (String) params.get("playerTwo"), "/game");
+        storeCookie("boardSize", (String) params.get("boardSize"), "/game");
         resp.put("Set-Cookie", cookies);
         doGet();
     }
@@ -64,10 +66,11 @@ public class GameStart implements Responder {
 
     private Hashtable parseCookies() {
         Hashtable parsedCookies = new Hashtable();
-        String[] cookies = this.cookies.split("; ");
-        for(String cookie: cookies) {
-            String[] splitCookies = cookie.split("=");
-            parsedCookies.put(splitCookies[0], splitCookies[1]);
+        for(Object cookie: cookies) {
+            String theCookie = (String) cookie;
+            String[] getCookie = theCookie.split(";");
+            String[] splitCookie = getCookie[0].split("=");
+            parsedCookies.put(splitCookie[0], splitCookie[1]);
         }
         return parsedCookies;
     }
