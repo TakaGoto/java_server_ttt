@@ -1,10 +1,12 @@
 package Responders;
 
 import Presenters.BoardPresenter;
+import Presenters.GamePresenter;
 import Ui.JavaTTTUi;
 import com.server.Handlers.Responder;
 import com.server.Responses.ResponseStatusLine;
 import com.tictactoe.Board.Board;
+import com.tictactoe.Board.BoardLogic;
 import com.tictactoe.Game;
 
 import java.nio.charset.Charset;
@@ -13,7 +15,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class PlayGame implements Responder {
-    private JavaTTTUi javaTTTUi = new JavaTTTUi();
     private Hashtable resp = new Hashtable();
     private Hashtable req = new Hashtable();
     private Hashtable header = new Hashtable();
@@ -38,9 +39,11 @@ public class PlayGame implements Responder {
     }
 
     private void doGet() {
+        JavaTTTUi javaTTTUi = new JavaTTTUi();
         Hashtable settings = parseCookie(req);
         Board board = Game.playGame(javaTTTUi, settings, "");
-        String body = BoardPresenter.generateBoard(board.getSlots());
+        String body = GamePresenter.generateMessage(javaTTTUi.getMessage());
+        body += BoardPresenter.generateBoard(board.getSlots());
         resp.put("message-body", body.getBytes(Charset.forName("utf-8")));
         resp.put("status-line", ResponseStatusLine.get("200", req.get("HTTP-Version")));
 
@@ -48,12 +51,11 @@ public class PlayGame implements Responder {
     }
 
     private void doPost() {
+        JavaTTTUi javaTTTUi = new JavaTTTUi();
         Hashtable settings = parseCookie(req);
         Hashtable params = (Hashtable) req.get("Body");
         Board board = Game.playGame(javaTTTUi, settings, (String) params.get("playerMove"));
-        String body = BoardPresenter.generateBoard(board.getSlots());
-        resp.put("message-body", body.getBytes(Charset.forName("utf-8")));
-        resp.put("status-line", ResponseStatusLine.get("200", req.get("HTTP-Version")));
+        resp.put("message-body", "".getBytes(Charset.forName("utf-8")));
         header.put("Location", "http://" + req.get("Host") + "/player_move");
         resp.put("status-line", ResponseStatusLine.get("301", req.get("HTTP-Version")));
 

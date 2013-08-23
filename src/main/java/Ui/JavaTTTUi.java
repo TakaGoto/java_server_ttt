@@ -21,9 +21,14 @@ public class JavaTTTUi implements UserInterface{
     }
 
     public void displayResult(String result) {
-       if(result.equals("tie")) {
-           addMessage("Game over!  It is a tie");
-       }
+        String htmlResult;
+        if(result.equals("tie")) {
+            htmlResult = "Game over!  It is a tie";
+        } else {
+            htmlResult = "Game over!  " + result + " wins!";
+        }
+        htmlResult += "<p> play again ? </p><a href='/'>yes</a>";
+        addMessage(htmlResult);
     }
 
     public String getMessage() {

@@ -23,4 +23,8 @@ public class BoardPresenterTest {
     @Test public void generateBoardHtmlHasPlayerMoveName() {
         Assert.assertTrue(htmlBoard.contains("player_move"));
     }
+
+    @Test public void generateBoardHtmlHasFourByFourBoard() {
+        Assert.assertTrue(htmlBoard.contains("15"));
+    }
 }

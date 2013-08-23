@@ -29,6 +29,12 @@ public class JavaTTTUiTest {
     @Test public void testDisplayResult() throws Exception {
         javaTTTUi.displayResult("tie");
         String message = javaTTTUi.getMessage();
-        assertEquals("Game over!  It is a tie", message);
+        assertEquals("Game over!  It is a tie<p> play again ? </p><a href='/'>yes</a>", message);
+    }
+
+    @Test public void testDisplayResultWinner() {
+        javaTTTUi.displayResult("X");
+        String message = javaTTTUi.getMessage();
+        assertEquals("Game over!  X wins!<p> play again ? </p><a href='/'>yes</a>", message);
     }
 }
