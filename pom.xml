@@ -15,18 +15,20 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>TicTacToe</groupId>
-            <artifactId>TicTacToeJar</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>TakaServer</groupId>
-            <artifactId>TakaServerJar</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+      <dependency>
+         <groupId>TakaServer</groupId>
+         <artifactId>TakaServer</artifactId>
+         <scope>system</scope>
+         <version>1.0</version>
+         <systemPath>${project.basedir}/lib/java_server.jar</systemPath>
+      </dependency>
+      <dependency>
+         <groupId>TicTacToe</groupId>
+         <artifactId>TicTacToe</artifactId>
+         <scope>system</scope>
+         <version>1.0</version>
+         <systemPath>${project.basedir}/lib/TicTacToe.jar</systemPath>
+      </dependency>
     </dependencies>
 <build>
   <pluginManagement>
