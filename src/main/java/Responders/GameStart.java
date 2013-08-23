@@ -25,29 +25,25 @@ public class GameStart implements Responder {
         header.put("Content-Type", "text/html");
         header.put("Connection", "close");
 
-        if(req.get("Method").equals("POST"))
+        if(req.get("Method").equals("POST")) {
             doPost();
+        }
         else if(req.get("Method").equals("GET"))
             doGet();
 
+        header.put("Set-Cookie", cookies);
         resp.put("message-header", header);
 
         return resp;
     }
 
-    private void storeCookie(String name, String value, String path) {
-        cookies.add(name + "=" + value + "; " + "path=" + path);
-    }
-
     private void doPost() {
         Hashtable params = (Hashtable) req.get("Body");
         Board board = new Board(Integer.parseInt((String) params.get("boardSize")));
-        storeCookie("board", board.getSlots(), "/game");
-        storeCookie("playerOne", (String) params.get("playerOne"), "/game");
-        storeCookie("playerTwo", (String) params.get("playerTwo"), "/game");
-        storeCookie("boardSize", (String) params.get("boardSize"), "/game");
-        resp.put("Set-Cookie", cookies);
-        doGet();
+        header.put("Location", "http://" + req.get("Host") + "/game");
+        resp.put("status-line", ResponseStatusLine.get("301", req.get("HTTP-Version")));
+        resp.put("message-body", "".getBytes(Charset.forName("utf-8")));
+        storeAllCookies(params, board, "/game");
     }
 
     private void doGet() {
@@ -61,6 +57,7 @@ public class GameStart implements Responder {
             String body = BoardPresenter.generateBoard(board.getSlots());
             resp.put("message-body", body.getBytes(Charset.forName("utf-8")));
             resp.put("status-line", ResponseStatusLine.get("200", req.get("HTTP-Version")));
+            storeAllCookies(settings, board, "/player_move");
         }
     }
 
@@ -73,5 +70,17 @@ public class GameStart implements Responder {
             parsedCookies.put(splitCookie[0], splitCookie[1]);
         }
         return parsedCookies;
+    }
+
+    private void storeCookie(String name, String value, String path) {
+        cookies.add(name + "=" + value + "; " + "path=" + path);
+    }
+
+    private void storeAllCookies(Hashtable params, Board board, String path) {
+        cookies.clear();
+        storeCookie("board", board.getSlots(), path);
+        storeCookie("playerOne", (String) params.get("playerOne"), path);
+        storeCookie("playerTwo", (String) params.get("playerTwo"), path);
+        storeCookie("boardSize", (String) params.get("boardSize"), path);
     }
 }

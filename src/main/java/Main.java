@@ -1,4 +1,5 @@
 import Responders.GameStart;
+import Responders.PlayGame;
 import Responders.TTTOption;
 import com.server.Server;
 
@@ -7,6 +8,7 @@ public class Main {
         Server server = new Server(5000);
         server.mount("/", new TTTOption());
         server.mount("/game", new GameStart());
+        server.mount("/player_move", new PlayGame());
         server.listen();
     }
 }

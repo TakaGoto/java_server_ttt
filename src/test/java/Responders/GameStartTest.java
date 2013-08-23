@@ -30,7 +30,8 @@ public class GameStartTest {
         req.put("Body", body);
         req.put("Method", "POST");
         resp = gameStart.respond(req);
-        cookies = (List<String>) resp.get("Set-Cookie");
+        Hashtable header = (Hashtable) resp.get("message-header");
+        cookies = (List<String>) header.get("Set-Cookie");
         assertEquals(4, cookies.size());
     }
 
@@ -61,5 +62,21 @@ public class GameStartTest {
         Assert.assertTrue(body.contains("submit"));
         assertEquals("HTTP/1.0 200 OK", resp.get("status-line"));
         assertEquals("close", header.get("Connection"));
+    }
+
+    @Test public void gameStartGetStoresCookies() {
+        req.put("Method", "GET");
+        req.put("HTTP-Version", "HTTP/1.0");
+        cookies.add("playerOne=human; path=/");
+        cookies.add("playerTwo=computer; path=/");
+        cookies.add("board=_________; path=/");
+        cookies.add("boardSize=3; path=/");
+        gameStart.cookies = cookies;
+        resp = gameStart.respond(req);
+        List<String> cookies = gameStart.cookies;
+        assertEquals("board=_________; path=/player_move", cookies.get(0));
+        assertEquals("playerOne=human; path=/player_move", cookies.get(1));
+        assertEquals("playerTwo=computer; path=/player_move", cookies.get(2));
+        assertEquals("boardSize=3; path=/player_move", cookies.get(3));
     }
 }
