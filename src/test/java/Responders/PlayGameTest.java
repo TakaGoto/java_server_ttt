@@ -67,11 +67,4 @@ public class PlayGameTest {
         String body = new String((byte[]) resp.get("message-body"));
         Assert.assertTrue(body.contains("Game over!"));
     }
-
-    @Test public void clearCookiesIfGameIsOver() {
-        req.put("Method", "GET");
-        req.put("Cookie", "board=XXXOOOXXX; playerOne=computer; playerTwo=computer; boardSize=3");
-        resp = playGame.respond(req);
-        assertEquals(true, playGame.cookies.isEmpty());
-    }
 }
