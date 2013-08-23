@@ -7,7 +7,7 @@ import com.server.Server;
 
 public class Main {
     public static void main(String[] args) {
-        Server server = new Server(5000);
+        Server server = new Server(4567);
         server.mount("/", new TTTOption());
         server.mount("/game", new GameStart());
         server.mount("/player_move", new PlayGame());

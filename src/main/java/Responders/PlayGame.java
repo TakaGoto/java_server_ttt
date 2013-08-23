@@ -6,7 +6,6 @@ import Ui.JavaTTTUi;
 import com.server.Handlers.Responder;
 import com.server.Responses.ResponseStatusLine;
 import com.tictactoe.Board.Board;
-import com.tictactoe.Board.BoardLogic;
 import com.tictactoe.Game;
 
 import java.nio.charset.Charset;
